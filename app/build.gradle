@@ -1,0 +1,122 @@
+plugins {
+//    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.lovisgod.kozenlib'
+    compileSdk 33
+
+    defaultConfig {
+//        applicationId "com.lovisgod.kozenlib"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            abiFilters 'armeabi'
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    compileOnly files('extern_libs/classes-2.1.14.jar')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+//    implementation 'androidx.core:core-ktx:1.7.0'
+
+    api "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.10"
+
+    // retrofit
+
+    // retrofit http library
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+
+    api("com.squareup.retrofit2:converter-simplexml:$retrofit_version") {
+        exclude group: 'stax', module: 'stax-api'
+        exclude group: 'stax', module: 'stax'
+    }
+
+    api 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    // retrofit gson converter
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // dependencies injections libraries
+    api "org.koin:koin-core:$koin_version"
+//    api "org.koin:koin-android-viewmodel:$koin_version"
+
+    // kotlin coroutine libs
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+    // architecture lifecycle components
+    api 'androidx.lifecycle:lifecycle-runtime:2.1.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+
+    api 'com.pixplicity.easyprefs:EasyPrefs:1.10.0'
+
+    api 'com.github.devicesandtokens:ISW_EMV_UTIL_LIB:0.1'
+
+
+    // Navigation
+//    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
+//    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
+
+//    // Room components
+//    implementation "androidx.room:room-ktx:2.4.2"
+//    kapt "androidx.room:room-compiler:2.4.2"
+//    androidTestImplementation "androidx.room:room-testing:2.4.2"
+
+
+    // kotlin optional lib
+    implementation "com.gojuno.koptional:koptional:1.6.0"
+
+    // zing
+    implementation "com.google.zxing:core:3.3.0"
+
+    // sentry
+    implementation 'io.sentry:sentry-android:6.5.0'
+
+    // picasso
+    api('com.squareup.picasso:picasso:2.71828') {
+        exclude group: "com.android.support"
+    }
+}
