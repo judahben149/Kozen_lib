@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-internal object DisplayUtils {
+internal object DisplayUtilsKozen {
 
     /**
      * This method converts dp unit to equivalent pixels, depending on device density.

@@ -1,7 +1,6 @@
 package com.lovisgod.kozenlib.core.network.models
 
 import android.os.Parcelable
-import com.lovisgod.kozenlib.core.database.entities.TransactionResultData
 import kotlinx.android.parcel.Parcelize
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Namespace
