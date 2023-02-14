@@ -26,8 +26,7 @@ const val RETROFIT_PAYMENT = "payment_retrofit"
 
 val networkModule = module {
 
-    factory {
-
+    factory(override = true) {
 
         OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
