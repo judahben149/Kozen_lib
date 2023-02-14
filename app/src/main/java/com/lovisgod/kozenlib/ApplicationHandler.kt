@@ -96,7 +96,7 @@ class ApplicationHandler: KoinComponent {
                 }
             }
         } catch (e: Exception) {
-            Log.e("omini terminal details error ==>", e.stackTraceToString())
+            Log.e("terminal error==>", e.stackTraceToString())
         }
     }
 
@@ -129,11 +129,13 @@ class ApplicationHandler: KoinComponent {
                                   hasContact: Boolean = true,
                                   amount: Long,
                                   amountOther: Long,
+                                  pinMode: Int,
                                   transType: Int, context: Context, emvEvents: EMVEvents
     ): Boolean {
         return try {
 
                 iswTransactionInteractor.setEmvContect(context)
+                iswTransactionInteractor.setPinMode(pinMode)
                 iswTransactionInteractor.startTransaction(
                     hasContactless, hasContact, amount, amountOther, transType, emvEvents)
                 true

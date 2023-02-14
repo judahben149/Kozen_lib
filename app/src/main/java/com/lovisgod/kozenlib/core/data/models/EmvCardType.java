@@ -44,6 +44,18 @@ public enum EmvCardType {
         return ret;
     }
 
+
+    public static EmvCardType getCardTypeX(int type) {
+        EmvCardType ret = DEFAULT;
+        for (EmvCardType val : EmvCardType.values()) {
+            if (val.type == type) {
+                ret = val;
+                break;
+            }
+        }
+        return ret;
+    }
+
     public String getName() {
         return name;
     }

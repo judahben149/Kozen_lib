@@ -7,6 +7,7 @@ import android.util.Log
 import com.interswitchng.smartpos.shared.utilities.console
 import com.lovisgod.kozenlib.core.data.dataInteractor.EMVEvents
 import com.lovisgod.kozenlib.core.data.models.EmvCard
+import com.lovisgod.kozenlib.core.data.models.EmvCardType
 import com.lovisgod.kozenlib.core.data.models.EmvPinData
 import com.lovisgod.kozenlib.core.data.models.TransactionData
 import com.lovisgod.kozenlib.core.data.utilsData.*
@@ -17,6 +18,7 @@ import com.pos.sdk.emvcore.IPosEmvCoreListener
 import com.pos.sdk.emvcore.POIEmvCoreManager
 import com.pos.sdk.emvcore.PosEmvErrorCode
 import com.pos.sdk.security.POIHsmManage
+import kotlinx.coroutines.delay
 import java.lang.Exception
 
 
@@ -39,6 +41,7 @@ class EmvHandler {
     var emvEvents: EMVEvents ? = null
     var pinMode :Int ?  = POIHsmManage.PED_PINBLOCK_FETCH_MODE_DUKPT
     var pinKey: Int? = KeysUtils.DUKPTKEY_INDEX
+    var emvCardType = EmvCardType.DEFAULT
 
 
     fun setEmvContext(context: Context) {
@@ -127,9 +130,12 @@ class EmvHandler {
                     POIEmvCoreManager.DEVICE_CONTACT -> {
                         console.log("card transaction type","Contact Card Trans")
                         this@EmvHandler.emvEvents?.onEmvProcessing(message = "Contact Card Trans")
+                        this@EmvHandler.emvEvents?.onCardDetected(true)
                     }
                     POIEmvCoreManager.DEVICE_CONTACTLESS -> {
                         console.log("card transaction type", "Contactless Card Trans")
+                        this@EmvHandler.emvEvents?.onEmvProcessing(message = "Contactless Card Trans")
+                        this@EmvHandler.emvEvents?.onCardDetected(false)
                     }
                     POIEmvCoreManager.DEVICE_MAGSTRIPE -> { console.log("card transaction type","Magstripe Card Trans") }
                     else -> {
@@ -167,6 +173,8 @@ class EmvHandler {
 
         override fun onKernelType(type: Int) {
             transData?.setCardType(type)
+            emvCardType = EmvCardType.getCardTypeX(type)
+            this@EmvHandler.emvEvents?.onCardRead("", emvCardType)
         }
 
         override fun onSecondTapCard() {
