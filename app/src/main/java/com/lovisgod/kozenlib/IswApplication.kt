@@ -1,6 +1,8 @@
 package com.lovisgod.kozenlib
 
 import android.app.Application
+import android.content.Context.MODE_PRIVATE
+import android.content.ContextWrapper
 import com.lovisgod.kozenlib.di.ExportModules
 import org.koin.dsl.module.Module
 import org.koin.dsl.module.module
@@ -11,37 +13,38 @@ import com.pixplicity.easyprefs.library.Prefs
 
 
 
-class IswApplication: Application() {
+object IswApplication {
 
 
 
-    override fun onCreate() {
-        super.onCreate()
-        loadModules()
+     fun onCreate(app: Application) {
+
+        loadModules(app)
 
         Prefs.Builder()
-            .setContext(this)
-            .setMode(MODE_PRIVATE)
-            .setPrefsName(packageName)
+            .setContext(app)
+            .setMode(ContextWrapper.MODE_PRIVATE)
+            .setPrefsName("com.lovisgod.kozenlib")
             .setUseDefaultSharedPreference(true)
             .build()
     }
+
+
 
     fun appContext(app: Application) = module(override = true) {
         single { app.applicationContext }
 
     }
 
-    fun loadModules(){
+    fun loadModules(app: Application){
 // set up koin
         var modules = arrayListOf<Module>()
-        modules.add(appContext(this))
+        modules.add(appContext(app))
         modules.addAll(ExportModules.modules)
         StandAloneContext.loadKoinModules(modules)
     }
 
-    companion object {
+
         val clientId: String = "IKIA4733CE041F41ED78E52BD3B157F3AAE8E3FE153D"
         val clientSecret: String = "t1ll73stS3cr3t"
-    }
 }
