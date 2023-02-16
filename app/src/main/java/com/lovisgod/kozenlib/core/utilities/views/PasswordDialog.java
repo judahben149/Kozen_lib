@@ -500,24 +500,30 @@ public class PasswordDialog {
             switch (extra) {
                 case 0xFFFF:
                 case 0xFFFD:
+                    System.out.println("VERIFY CANCELED");
                     onPinError(EmvPinConstraints.VERIFY_CANCELED, 0);
                     closeDialog();
                     return;
                 case 0xFFFC:
+                    System.out.println("The terminal triggers a security check.");
                     tvMessage.setText("The terminal triggers a security check.");
                     break;
                 case 0xFED3:
+                    System.out.println("TThe terminal did not write the PIN key. Please check.");
                     tvMessage.setText("The terminal did not write the PIN key. Please check.");
                     break;
                 case 0XFECF:
                     if (pinBypass) {
+                        System.out.println("PIN BYPASS.");
                         onPinError(EmvPinConstraints.VERIFY_NO_PASSWORD, 0);
                     } else {
+                        System.out.println("ERROR NOT PIN BYPASS.");
                         onPinError(EmvPinConstraints.VERIFY_ERROR, 0);
                     }
                     closeDialog();
                     return;
                 default:
+                    System.out.println("DEFAULT ERROR NO PASSWORD.");
                     onPinError(EmvPinConstraints.VERIFY_NO_PASSWORD, 0);
                     closeDialog();
                     return;
