@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 
+import com.interswitchng.smartpos.shared.utilities.console;
 import com.lovisgod.kozenlib.R;
 import com.lovisgod.kozenlib.core.data.utilsData.Constants;
 import com.lovisgod.kozenlib.core.data.utilsData.KeysUtils;
@@ -341,6 +342,7 @@ public class PasswordDialog {
     }
 
     public void closeDialog() {
+        console.Companion.log("close pin dialog", "Dialog is closed");
         dialog.dismiss();
         hsmManage.unregisterListener(pinEventListener);
     }
@@ -533,6 +535,7 @@ public class PasswordDialog {
 
                 @Override
                 public void run() {
+                    console.Companion.log("pin cancel is called", "pin canceled called here");
                     onPinError(EmvPinConstraints.VERIFY_CANCELED, 0);
                     closeDialog();
                 }
