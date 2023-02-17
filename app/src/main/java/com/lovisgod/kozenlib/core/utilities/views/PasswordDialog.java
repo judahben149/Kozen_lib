@@ -527,7 +527,8 @@ public class PasswordDialog {
                 default:
                     System.out.println("DEFAULT ERROR NO PASSWORD.");
                     onPinError(EmvPinConstraints.VERIFY_NO_PASSWORD, 0);
-                    closeDialog();
+                    // this is a temporary fix until I know what the issue is
+//                    closeDialog();
                     return;
             }
 
