@@ -117,7 +117,7 @@ dependencies {
     implementation "com.google.zxing:core:3.3.0"
 
     // sentry
-    implementation 'io.sentry:sentry-android:6.5.0'
+//    implementation 'io.sentry:sentry-android:6.5.0'
 
     // picasso
     api('com.squareup.picasso:picasso:2.71828') {
