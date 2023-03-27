@@ -28,6 +28,7 @@
     <uses-permission android:name="com.pos.permission.EMVCORE" />
 
 <!--    <application-->
+<!--        android:name=".SampleApplication"-->
 <!--        tools:replace="android:theme"-->
 <!--        android:allowBackup="true"-->
 <!--        android:dataExtractionRules="@xml/data_extraction_rules"-->

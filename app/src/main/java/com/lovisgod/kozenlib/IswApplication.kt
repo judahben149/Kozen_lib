@@ -48,3 +48,10 @@ object IswApplication {
         val clientId: String = "IKIA4733CE041F41ED78E52BD3B157F3AAE8E3FE153D"
         val clientSecret: String = "t1ll73stS3cr3t"
 }
+
+class SampleApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        IswApplication.onCreate(this)
+    }
+}

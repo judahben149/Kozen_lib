@@ -146,6 +146,25 @@ class ApplicationHandler: KoinComponent {
         }
     }
 
+    // start transaction
+    suspend fun checkCard( hasContactless: Boolean = true,
+                                  hasContact: Boolean = true,
+                                  amount: Long,
+                                  amountOther: Long,
+                                  transType: Int,
+                                  emvEvents: EMVEvents
+    ): Boolean {
+        return try {
+            iswTransactionInteractor.checkCard(
+                hasContactless, hasContact, amount, amountOther, transType, emvEvents)
+            true
+
+        } catch (e:Exception) {
+            Log.e("startTransaction error", e.stackTraceToString())
+            return  false
+        }
+    }
+
 
     // get transaction data
 

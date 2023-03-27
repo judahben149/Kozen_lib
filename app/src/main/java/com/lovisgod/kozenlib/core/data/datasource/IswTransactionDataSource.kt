@@ -20,4 +20,13 @@ interface IswTransactionDataSource {
     suspend fun setEmvContect(context: Context)
 
     suspend fun setEmvPINMODE(pinMode: Int)
+
+    suspend fun checkCard(
+        hasContactless: Boolean = true,
+        hasContact: Boolean = true,
+        amount: Long,
+        amountOther: Long,
+        transType: Int,
+        emvEvents: EMVEvents
+    )
 }
