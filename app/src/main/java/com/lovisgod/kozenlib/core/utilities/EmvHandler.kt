@@ -174,7 +174,7 @@ class EmvHandler {
         override fun onKernelType(type: Int) {
             transData?.setCardType(type)
             emvCardType = EmvCardType.getCardTypeX(type)
-            this@EmvHandler.emvEvents?.onCardRead("", emvCardType)
+//            this@EmvHandler.emvEvents?.onCardRead("", emvCardType)
         }
 
         override fun onSecondTapCard() {
