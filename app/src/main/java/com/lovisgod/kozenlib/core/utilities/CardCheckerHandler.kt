@@ -108,14 +108,10 @@ class CardCheckerHandler {
                 when (type) {
                     POIEmvCoreManager.DEVICE_CONTACT -> {
                         console.log("card transaction type","Contact Card Trans")
-                        this@CardCheckerHandler.emvEvents?.onEmvProcessing(message = "Contact Card Trans")
                         this@CardCheckerHandler.emvEvents?.onCardDetected(true)
-                        var cardPanRead = bundle?.getByteArray(EmvCardInfoConstraints.TRACK1)
-                        println("this is cardread ${cardPanRead}")
                     }
                     POIEmvCoreManager.DEVICE_CONTACTLESS -> {
                         console.log("card transaction type", "Contactless Card Trans")
-                        this@CardCheckerHandler.emvEvents?.onEmvProcessing(message = "Contactless Card Trans")
                         this@CardCheckerHandler.emvEvents?.onCardDetected(false)
                     }
                     POIEmvCoreManager.DEVICE_MAGSTRIPE -> { console.log("card transaction type","Magstripe Card Trans") }
