@@ -306,6 +306,7 @@ class EmvHandler {
                 PosEmvErrorCode.EMV_CANCEL, PosEmvErrorCode.EMV_TIMEOUT -> {
 //                    onTransEnd()
                     println("transaction timed out")
+                    this@EmvHandler.emvEvents?.onRemoveCard()
                     return
                 }
 
