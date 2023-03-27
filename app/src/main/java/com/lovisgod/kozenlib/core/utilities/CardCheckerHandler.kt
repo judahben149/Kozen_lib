@@ -145,7 +145,7 @@ class CardCheckerHandler {
 
         override fun onKernelType(type: Int) {
             emvCardType = EmvCardType.getCardTypeX(type)
-            this@CardCheckerHandler.emvEvents?.onCardRead("", emvCardType)
+//            this@CardCheckerHandler.emvEvents?.onCardRead("", emvCardType)
         }
 
         override fun onSecondTapCard() {
