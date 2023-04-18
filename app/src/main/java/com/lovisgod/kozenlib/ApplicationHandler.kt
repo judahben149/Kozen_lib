@@ -1,11 +1,9 @@
 package com.lovisgod.kozenlib
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
-import com.lovisgod.kozenlib.core.data.dataInteractor.EMVEvents
-import com.lovisgod.kozenlib.core.data.dataInteractor.IswConfigSourceInteractor
-import com.lovisgod.kozenlib.core.data.dataInteractor.IswDetailsAndKeySourceInteractor
-import com.lovisgod.kozenlib.core.data.dataInteractor.IswTransactionInteractor
+import com.lovisgod.kozenlib.core.data.dataInteractor.*
 import com.lovisgod.kozenlib.core.data.models.IswTerminalModel
 import com.lovisgod.kozenlib.core.data.models.TerminalInfo
 import com.lovisgod.kozenlib.core.data.utilsData.RequestIccData
@@ -20,7 +18,13 @@ class ApplicationHandler: KoinComponent {
     val iswConfigSourceInteractor: IswConfigSourceInteractor by inject()
     val iswDetailsAndKeySourceInteractor: IswDetailsAndKeySourceInteractor by inject()
     val iswTransactionInteractor: IswTransactionInteractor by inject()
+    val iswPrinterInteractor: IswPrinterInteractor by inject()
 //    val context: Context,
+
+
+    suspend fun print(context: Context, printerEvent: PrinterEvent, bitmap: Bitmap) {
+        iswPrinterInteractor.print(context, printerEvent, bitmap)
+    }
 
 
     // set up terminal config
