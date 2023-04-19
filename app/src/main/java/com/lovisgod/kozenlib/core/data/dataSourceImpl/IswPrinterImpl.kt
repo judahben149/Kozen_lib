@@ -30,9 +30,9 @@ class IswPrinterImpl: IswPrinterDataSource {
         printerManager.setLineSpace(5)
         //printerManager.cleanCache();
         //printerManager.cleanCache();
-        val str1 = "This is an example of a receipt"
-        val p1: PrintLine = TextPrintLine(str1, PrintLine.CENTER)
-        printerManager.addPrintLine(p1)
+//        val str1 = "This is an example of a receipt"
+//        val p1: PrintLine = TextPrintLine(str1, PrintLine.CENTER)
+//        printerManager.addPrintLine(p1)
 //        val bitmap =
         printerManager.addPrintLine(BitmapPrintLine(bitmapx, PrintLine.CENTER))
 
