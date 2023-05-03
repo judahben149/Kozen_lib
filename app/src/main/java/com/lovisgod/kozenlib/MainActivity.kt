@@ -24,19 +24,19 @@ class MainActivity : AppCompatActivity(), EMVEvents, PrinterEvent {
     private fun handleClicks() {
         testBtn.setOnClickListener {
             runBlocking {
-//                applicationHandler.loadAllConfig()
+                applicationHandler.loadAllConfig()
 
-//                delay(2000)
+                delay(2000)
 
-//                applicationHandler.checkCard(
-//                    true, true, 100L, 0L, 0, this@MainActivity
-//                )
+                applicationHandler.checkCard(
+                    true, true, 100L, 0L, 0, this@MainActivity
+                )
 
-                PrinterUtil().generateTestBitmap()?.let { it1 ->
-                    applicationHandler.print(this@MainActivity, this@MainActivity,
-                        it1
-                    )
-                }
+//                PrinterUtil().generateTestBitmap()?.let { it1 ->
+//                    applicationHandler.print(this@MainActivity, this@MainActivity,
+//                        it1
+//                    )
+//                }
 
             }
         }

@@ -163,6 +163,29 @@ class CardCheckerHandler {
         }
 
         override fun onTransactionResult(result: Int, bundle: Bundle) {
+
+
+            when (result) {
+                PosEmvErrorCode.EMV_CANCEL, PosEmvErrorCode.EMV_TIMEOUT -> {
+//                    onTransEnd()
+                    println("transaction timed out")
+                    this@CardCheckerHandler.emvEvents?.onRemoveCard()
+                    return
+                }
+
+                PosEmvErrorCode.EMV_TERMINATED,
+                PosEmvErrorCode.EMV_COMMAND_FAIL,
+                PosEmvErrorCode.EMV_NOT_ALLOWED,
+                PosEmvErrorCode.EMV_APP_EMPTY,
+                PosEmvErrorCode.EMV_NOT_ACCEPTED -> {
+                    println("An emv error just occurred")
+                    this@CardCheckerHandler.emvEvents?.onRemoveCard()
+
+                    return
+                }
+                else -> {
+                }
+            }
             var data: ByteArray?
             var encryptData: ByteArray?
             var cardPanRead = bundle.getByteArray(EmvCardInfoConstraints.TRACK2)
