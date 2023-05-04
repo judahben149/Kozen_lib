@@ -173,14 +173,12 @@ class CardCheckerHandler {
                     return
                 }
 
-                PosEmvErrorCode.EMV_TERMINATED,
                 PosEmvErrorCode.EMV_COMMAND_FAIL,
                 PosEmvErrorCode.EMV_NOT_ALLOWED,
                 PosEmvErrorCode.EMV_APP_EMPTY,
                 PosEmvErrorCode.EMV_NOT_ACCEPTED -> {
-                    println("An emv error just occurred")
+                    println("An emv error just occurred ::::: ${result}")
                     this@CardCheckerHandler.emvEvents?.onRemoveCard()
-
                     return
                 }
                 else -> {
