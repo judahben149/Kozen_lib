@@ -514,16 +514,6 @@ class EmvHandler {
                         Constants.POS_DATA_CODE = Constants.CLSS_POS_DATA_CODE
                     }
 
-                    println(
-                        "iccData => {" +
-                                "date: ${iccData?.TRANSACTION_DATE} " +
-                                "name: ${iccData?.CARD_HOLDER_NAME} " +
-                                "amount: ${iccData?.TRANSACTION_AMOUNT} " +
-                                "Track2Data ${iccData?.TRACK_2_DATA}" +
-                                "haspin ${iccData?.haspin}" +
-                                "iccString ${iccData?.iccAsString}" +
-                        "}"
-                    )
 
 //                    for (tag in REQUEST_TAGS) {
 //                        println("tag value ::::::::::::::: $tag")
@@ -534,6 +524,21 @@ class EmvHandler {
 //                    iccString = buildIccString(tagValues)
 
                     println("iccccc =>->=>>>>>>>>>>>>>>> ${iccString}")
+
+
+                    iccData?.iccAsString = iccString
+
+
+                    println(
+                        "iccData => {" +
+                                "date: ${iccData?.TRANSACTION_DATE} " +
+                                "name: ${iccData?.CARD_HOLDER_NAME} " +
+                                "amount: ${iccData?.TRANSACTION_AMOUNT} " +
+                                "Track2Data ${iccData?.TRACK_2_DATA}" +
+                                "haspin ${iccData?.haspin}" +
+                                "iccString ${iccData?.iccAsString}" +
+                                "}"
+                    )
 
                     iccData?.let {
                         this@EmvHandler.emvEvents?.onEmvProcessed(it)

@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), EMVEvents, PrinterEvent {
                 delay(2000)
 
                 applicationHandler.startTransaction(
-                    true, true, 100L, 0L, 0, 0,
+                    true, true, 100L, 0L, 1, 0,
                     this@MainActivity, this@MainActivity
                 )
 
