@@ -103,7 +103,7 @@ public class PasswordDialog {
         }
 
         if (bundle.containsKey(EmvPinConstraints.PIN_ENCRYPT)) {
-            isEncrypt = true;
+            isEncrypt = false;
         }
         if (bundle.containsKey(EmvPinConstraints.PIN_CARD)) {
             pinCard = bundle.getString(EmvPinConstraints.PIN_CARD);
