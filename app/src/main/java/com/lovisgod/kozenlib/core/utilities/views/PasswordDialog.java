@@ -66,6 +66,7 @@ public class PasswordDialog {
 
     private String title;
     private String message;
+    private String amount;
 
     private POIHsmManage     hsmManage;
     private PinEventListener pinEventListener;
@@ -77,10 +78,11 @@ public class PasswordDialog {
     private ImageView btnClear;
     private TextView  btnEsc, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
-    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode) {
+    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode, String amount) {
         System.out.println("key index" + keyIndex);
         this.hsmManage = POIHsmManage.getDefault();
         this.pinEventListener = new PinEventListener();
+        this.amount = amount;
         if (isIcSlot) {
             this.icSlot = 0;
         } else {
@@ -126,11 +128,11 @@ public class PasswordDialog {
 
         switch (pinType) {
             case ONLINE_PIN:
-                title = "Online PIN";
+                title = "Online PIN - Amount N " + this.amount;
                 break;
             case PLAIN_PIN:
             case ENCIPHER_PIN:
-                title = "Offline PIN";
+                title = "Offline PIN - Amount N " + this.amount;
                 if (pinCounter > 1) {
                     message = "PIN " + pinCounter + " ";
                 } else if (pinCounter == 1) {

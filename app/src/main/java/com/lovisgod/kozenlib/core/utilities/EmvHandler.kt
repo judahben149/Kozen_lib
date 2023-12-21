@@ -42,6 +42,7 @@ class EmvHandler {
     var pinMode :Int ?  = POIHsmManage.PED_PINBLOCK_FETCH_MODE_DUKPT
     var pinKey: Int? = KeysUtils.DUKPTKEY_INDEX
     var emvCardType = EmvCardType.DEFAULT
+    var transAmount : String? = ""
 
 
     fun setEmvContext(context: Context) {
@@ -74,6 +75,7 @@ class EmvHandler {
             Constants.memoryPinData.ksn = ""
             this.emvEvents = emvEvents
             this.emvEvents!!.onInsertCard()
+            this.transAmount = DisplayUtilsKozen.getAmountString(amount.toInt() / 100.0)
 
             emvCoreManager = POIEmvCoreManager.getDefault()
             emvCoreListener = POIEmvCoreListener()
@@ -188,7 +190,7 @@ class EmvHandler {
                 val isIcSlot = cardType == POIEmvCoreManager.DEVICE_CONTACT
                 val dialog =
                     PasswordDialog( this@EmvHandler.context, isIcSlot,
-                        bundle, pinKey!!, pinMode!!)
+                        bundle, pinKey!!, pinMode!!, transAmount)
                 dialog.showDialog()
             }
 
