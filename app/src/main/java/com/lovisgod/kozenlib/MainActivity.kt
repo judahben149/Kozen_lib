@@ -28,8 +28,12 @@ class MainActivity : AppCompatActivity(), EMVEvents, PrinterEvent {
 
                 delay(2000)
 
-                applicationHandler.checkCard(
-                    true, true, 100L, 0L, 0, this@MainActivity
+//                applicationHandler.checkCard(
+//                    true, true, 100L, 0L, 0, this@MainActivity
+//                )
+
+                applicationHandler.startTransaction(
+                    true, true, 100L, 0L, 0, 0, this@MainActivity, this@MainActivity
                 )
 
 //                PrinterUtil().generateTestBitmap()?.let { it1 ->
