@@ -42,6 +42,7 @@ class EmvHandler {
     var pinMode :Int ?  = POIHsmManage.PED_PINBLOCK_FETCH_MODE_DUKPT
     var pinKey: Int? = KeysUtils.DUKPTKEY_INDEX
     var emvCardType = EmvCardType.DEFAULT
+    var transAmount : String? = ""
 
 
     fun setEmvContext(context: Context) {
@@ -74,6 +75,7 @@ class EmvHandler {
             Constants.memoryPinData.ksn = ""
             this.emvEvents = emvEvents
             this.emvEvents!!.onInsertCard()
+            this.transAmount = DisplayUtilsKozen.getAmountString(amount.toInt() / 100.0)
 
             emvCoreManager = POIEmvCoreManager.getDefault()
             emvCoreListener = POIEmvCoreListener()
@@ -188,7 +190,7 @@ class EmvHandler {
                 val isIcSlot = cardType == POIEmvCoreManager.DEVICE_CONTACT
                 val dialog =
                     PasswordDialog( this@EmvHandler.context, isIcSlot,
-                        bundle, pinKey!!, pinMode!!)
+                        bundle, pinKey!!, pinMode!!, transAmount)
                 dialog.showDialog()
             }
 
@@ -514,16 +516,6 @@ class EmvHandler {
                         Constants.POS_DATA_CODE = Constants.CLSS_POS_DATA_CODE
                     }
 
-                    println(
-                        "iccData => {" +
-                                "date: ${iccData?.TRANSACTION_DATE} " +
-                                "name: ${iccData?.CARD_HOLDER_NAME} " +
-                                "amount: ${iccData?.TRANSACTION_AMOUNT} " +
-                                "Track2Data ${iccData?.TRACK_2_DATA}" +
-                                "haspin ${iccData?.haspin}" +
-                                "iccString ${iccData?.iccAsString}" +
-                        "}"
-                    )
 
 //                    for (tag in REQUEST_TAGS) {
 //                        println("tag value ::::::::::::::: $tag")
@@ -534,6 +526,21 @@ class EmvHandler {
 //                    iccString = buildIccString(tagValues)
 
                     println("iccccc =>->=>>>>>>>>>>>>>>> ${iccString}")
+
+
+                    iccData?.iccAsString = iccString
+
+
+                    println(
+                        "iccData => {" +
+                                "date: ${iccData?.TRANSACTION_DATE} " +
+                                "name: ${iccData?.CARD_HOLDER_NAME} " +
+                                "amount: ${iccData?.TRANSACTION_AMOUNT} " +
+                                "Track2Data ${iccData?.TRACK_2_DATA}" +
+                                "haspin ${iccData?.haspin}" +
+                                "iccString ${iccData?.iccAsString}" +
+                                "}"
+                    )
 
                     iccData?.let {
                         this@EmvHandler.emvEvents?.onEmvProcessed(it)
