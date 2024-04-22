@@ -27,6 +27,7 @@ import com.lovisgod.kozenlib.core.data.utilsData.Constants;
 import com.lovisgod.kozenlib.core.data.utilsData.KeysUtils;
 import com.lovisgod.kozenlib.core.network.models.MemoryPinData;
 import com.lovisgod.kozenlib.core.network.models.StringManipulator;
+import com.lovisgod.kozenlib.core.utilities.DeviceUtilsKozen;
 import com.lovisgod.kozenlib.core.utilities.HexUtil;
 import com.isw.pinencrypter.Converter;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -169,6 +170,23 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
+
+        if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
+            System.out.println("device is p13 hide pin");
+            btn0.setVisibility(View.GONE);
+            btn1.setVisibility(View.GONE);
+            btn2.setVisibility(View.GONE);
+            btn3.setVisibility(View.GONE);
+            btn4.setVisibility(View.GONE);
+            btn5.setVisibility(View.GONE);
+            btn6.setVisibility(View.GONE);
+            btn7.setVisibility(View.GONE);
+            btn8.setVisibility(View.GONE);
+            btn9.setVisibility(View.GONE);
+            btnEsc.setVisibility(View.GONE);
+            btnClear.setVisibility(View.GONE);
+            btnConfirm.setVisibility(View.GONE);
+        }
 
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
