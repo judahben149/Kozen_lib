@@ -3,9 +3,16 @@ package com.lovisgod.kozenlib.core.utilities.views;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 
@@ -79,9 +87,11 @@ public class PasswordDialog {
     private TextView  tvTitle;
     private TextView  tvPinLabelDesc;
     private MaterialTextView tvPin;
-    private Button    btnConfirm;
-    private ImageView btnClear;
-    private TextView  btnEsc, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
+    private CardView btnConfirm;
+    private CardView btnClear;
+    private ImageView  btnEsc;
+    private ConstraintLayout  layoutKeypad;
+    private CardView btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
     public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode, String amount) {
 
@@ -174,7 +184,8 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
-        tvPinLabelDesc.setText("Please enter your Card Pin to authorise and complete your payment of N " + amount);
+        setAmountSpannableString(amount);
+//        tvPinLabelDesc.setText("Please enter your Card Pin to authorise and complete your payment of N " + amount);
 
         if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
             System.out.println("device is p13 hide pin");
@@ -191,6 +202,7 @@ public class PasswordDialog {
             btnEsc.setVisibility(View.GONE);
             btnClear.setVisibility(View.GONE);
             btnConfirm.setVisibility(View.GONE);
+            layoutKeypad.setVisibility(View.GONE);
         }
 
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -209,6 +221,7 @@ public class PasswordDialog {
     }
 
     public void instantiateViews(ConstraintLayout view) {
+        layoutKeypad = view.findViewById(R.id.layout_keypad);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvMessage = view.findViewById(R.id.tvMessage);
         tvError = view.findViewById(R.id.tvError);
@@ -227,6 +240,20 @@ public class PasswordDialog {
         btn7 = view.findViewById(R.id.btn7);
         btn8 = view.findViewById(R.id.btn8);
         btn9 = view.findViewById(R.id.btn9);
+    }
+
+    public void setAmountSpannableString(String amount) {
+        String amountString = "Please enter your Card Pin to authorise and complete your payment of ";
+        SpannableStringBuilder spannableString = new SpannableStringBuilder(amountString);
+
+        String amountWithCurrency = "₦ " + amount;
+        SpannableString amountSpan = new SpannableString(amountWithCurrency);
+        amountSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, amountSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        amountSpan.setSpan(new ForegroundColorSpan(Color.rgb(0, 159, 228)), 0, amountSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        spannableString.append(amountSpan);
+
+        tvPinLabelDesc.setText(spannableString);
     }
 
     public void checkPinInput(){
@@ -566,10 +593,12 @@ public class PasswordDialog {
                     return;
                 case 0xFFFC:
                     System.out.println("The terminal triggers a security check.");
+                    tvError.setVisibility(View.VISIBLE);
                     tvError.setText("The terminal triggers a security check.");
                     break;
                 case 0xFED3:
                     System.out.println("TThe terminal did not write the PIN key. Please check.");
+                    tvError.setVisibility(View.VISIBLE);
                     tvError.setText("The terminal did not write the PIN key. Please check.");
                     break;
                 case 0XFECF:
@@ -700,7 +729,7 @@ public class PasswordDialog {
         map.put("-35", enter);
         map.put("-40", clear);
 
-        TextView[] keyView = new TextView[11];
+        CardView[] keyView = new CardView[11];
 
         if (isKeyboardFix) {
             keyView[0] = btn1;
@@ -724,11 +753,10 @@ public class PasswordDialog {
             keyView[7] = btn7;
             keyView[8] = btn8;
             keyView[9] = btn9;
-            keyView[10] = btnEsc;
         }
 
-        ImageView ivClear = btnClear;
-        Button btnConfirm = this.btnConfirm;
+        CardView ivClear = btnClear;
+        CardView btnConfirm = this.btnConfirm;
         int viewIndex = 0;
 
         for (int i = 0; i <= 12; i++) {
@@ -745,7 +773,8 @@ public class PasswordDialog {
                 if (value.equals(esc)) {
                     tv = btnEsc;
                 } else {
-                    keyView[viewIndex].setText(value);
+                    // COME BACK HERE OOOO JUDAH
+//                    keyView[viewIndex].setText(value);
                     tv = keyView[viewIndex++];
                 }
             }
