@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.interswitchng.smartpos.shared.utilities.console;
 import com.lovisgod.kozenlib.R;
 import com.lovisgod.kozenlib.core.data.utilsData.Constants;
@@ -72,12 +73,19 @@ public class PasswordDialog {
 
     private Dialog    dialog;
     private TextView  tvMessage;
-    private EditText  etPin;
+    private TextView  tvError;
+    private TextView  tvTitle;
+    private MaterialTextView tvPin;
     private Button    btnConfirm;
     private ImageView btnClear;
     private TextView  btnEsc, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
     public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ConstraintLayout view = (ConstraintLayout) inflater.inflate(R.layout.layout_password_new, null);
+        instantiateViews(view);
+
         this.hsmManage = POIHsmManage.getDefault();
         this.pinEventListener = new PinEventListener();
         if (isIcSlot) {
@@ -128,39 +136,34 @@ public class PasswordDialog {
 
         switch (pinType) {
             case ONLINE_PIN:
-                title = "Online PIN";
+                title = "Online";
                 break;
             case PLAIN_PIN:
             case ENCIPHER_PIN:
-                title = "Offline PIN";
-                if (pinCounter > 1) {
-                    message = "PIN " + pinCounter + " ";
+                title = "Offline";
+                if (pinCounter > 3) {
+                    tvMessage.setVisibility(View.INVISIBLE);
+                } else if (pinCounter == 3) {
+                    message = "(3 trials left)";
+                    tvMessage.setText(message);
+                    tvMessage.setVisibility(View.VISIBLE);
+                } else if (pinCounter == 2) {
+                    message = "(2 trials left)";
+                    tvMessage.setText(message);
+                    tvMessage.setVisibility(View.VISIBLE);
                 } else if (pinCounter == 1) {
-                    message = "PIN Last Times";
+                    message = "(1 trial left)";
+                    tvMessage.setText(message);
+                    tvMessage.setVisibility(View.VISIBLE);
+                } else {
+                    message = "No trials left";
+                    tvMessage.setText(message);
+                    tvMessage.setVisibility(View.VISIBLE);
                 }
                 break;
             default:
                 break;
         }
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        ConstraintLayout view = (ConstraintLayout) inflater.inflate(R.layout.layout_password, null);
-        TextView tvTitle = view.findViewById(R.id.tvTitle);
-        tvMessage = view.findViewById(R.id.tvMessage);
-        etPin = view.findViewById(R.id.etPin);
-        btnConfirm = view.findViewById(R.id.btnConfirm);
-        btnClear = view.findViewById(R.id.btnClear);
-        btnEsc = view.findViewById(R.id.btnEsc);
-        btn0 = view.findViewById(R.id.btn0);
-        btn1 = view.findViewById(R.id.btn1);
-        btn2 = view.findViewById(R.id.btn2);
-        btn3 = view.findViewById(R.id.btn3);
-        btn4 = view.findViewById(R.id.btn4);
-        btn5 = view.findViewById(R.id.btn5);
-        btn6 = view.findViewById(R.id.btn6);
-        btn7 = view.findViewById(R.id.btn7);
-        btn8 = view.findViewById(R.id.btn8);
-        btn9 = view.findViewById(R.id.btn9);
 
         Group groupKeyboard = view.findViewById(R.id.groupKeyboard);
 //        if (Constants.INSTANCE.isHardWareKeyBoard()) {
@@ -189,6 +192,26 @@ public class PasswordDialog {
 
     }
 
+    public void instantiateViews(ConstraintLayout view) {
+        tvTitle = view.findViewById(R.id.tvTitle);
+        tvMessage = view.findViewById(R.id.tvMessage);
+        tvError = view.findViewById(R.id.tvError);
+        tvPin = view.findViewById(R.id.tvPin);
+        btnConfirm = view.findViewById(R.id.btnConfirm);
+        btnClear = view.findViewById(R.id.btnClear);
+        btnEsc = view.findViewById(R.id.btnEsc);
+        btn0 = view.findViewById(R.id.btn0);
+        btn1 = view.findViewById(R.id.btn1);
+        btn2 = view.findViewById(R.id.btn2);
+        btn3 = view.findViewById(R.id.btn3);
+        btn4 = view.findViewById(R.id.btn4);
+        btn5 = view.findViewById(R.id.btn5);
+        btn6 = view.findViewById(R.id.btn6);
+        btn7 = view.findViewById(R.id.btn7);
+        btn8 = view.findViewById(R.id.btn8);
+        btn9 = view.findViewById(R.id.btn9);
+    }
+
     public void checkPinInput(){
         StringBuilder info = new StringBuilder();
         int xxxx  = pinX.length();
@@ -196,7 +219,7 @@ public class PasswordDialog {
             info.append("*");
         }
         if (info.length() <= 12) {
-            etPin.setText(info.toString());
+            tvPin.setText(info.toString());
         }
     }
 
@@ -484,7 +507,7 @@ public class PasswordDialog {
                 info.append("*");
             }
             if (info.length() <= 12) {
-                etPin.setText(info.toString());
+                tvPin.setText(info.toString());
             }
         }
 
@@ -508,11 +531,11 @@ public class PasswordDialog {
                     return;
                 case 0xFFFC:
                     System.out.println("The terminal triggers a security check.");
-                    tvMessage.setText("The terminal triggers a security check.");
+                    tvError.setText("The terminal triggers a security check.");
                     break;
                 case 0xFED3:
                     System.out.println("TThe terminal did not write the PIN key. Please check.");
-                    tvMessage.setText("The terminal did not write the PIN key. Please check.");
+                    tvError.setText("The terminal did not write the PIN key. Please check.");
                     break;
                 case 0XFECF:
                     if (pinBypass) {
