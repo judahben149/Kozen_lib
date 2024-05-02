@@ -5,6 +5,7 @@ import com.pos.sdk.emvcore.POIEmvCoreManager;
 public enum EmvCardType {
 
     DEFAULT(POIEmvCoreManager.EMV_CARD_NOT, ""),
+    VERVE(POIEmvCoreManager.EMV_CARD_NOT, "VERVE"),
     VISA(POIEmvCoreManager.EMV_CARD_VISA, "VISA"),
     UNIONPAY(POIEmvCoreManager.EMV_CARD_UNIONPAY, "UnionPay"),
     MASTERCARD(POIEmvCoreManager.EMV_CARD_MASTERCARD, "MasterCard"),

@@ -27,4 +27,19 @@ class IswTransactionInteractor( val iswTransactionDataSource: IswTransactionData
         iswTransactionDataSource.setEmvContect(context)
 
     suspend fun setPinMode(pinMode: Int) = iswTransactionDataSource.setEmvPINMODE(pinMode)
+
+    suspend fun checkCard(hasContactless: Boolean = true,
+                          hasContact: Boolean = true,
+                          amount: Long,
+                          amountOther: Long,
+                          transType: Int,
+                          emvEvents: EMVEvents
+    ) = iswTransactionDataSource.checkCard(
+        hasContactless,
+        hasContact,
+        amount,
+        amountOther,
+        transType,
+        emvEvents
+    )
 }

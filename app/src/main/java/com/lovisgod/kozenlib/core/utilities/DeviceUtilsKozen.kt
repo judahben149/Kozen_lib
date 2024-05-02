@@ -96,4 +96,10 @@ object DeviceUtilsKozen {
                                                    requestCode: Int, context: Activity) {
         ActivityCompat.requestPermissions(context, permissionsArray, requestCode)
     }
+
+    fun getDeviceModel(): Boolean {
+        val name = android.os.Build.MODEL
+        println("device model is $name")
+        return name.contains("P13")
+    }
 }

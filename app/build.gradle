@@ -25,10 +25,26 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'KozenOSSign'
+            keyPassword 'Kozen2022'
+            storeFile file('KozenOSSign.jks')
+            storePassword 'Kozen2022'
+        }
+    }
+
     buildTypes {
+
+        debug {
+            debuggable true
+            minifyEnabled false
+           signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+           signingConfig signingConfigs.release
         }
     }
     compileOptions {

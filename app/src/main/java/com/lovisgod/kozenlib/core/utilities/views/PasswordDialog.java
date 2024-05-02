@@ -28,6 +28,7 @@ import com.lovisgod.kozenlib.core.data.utilsData.Constants;
 import com.lovisgod.kozenlib.core.data.utilsData.KeysUtils;
 import com.lovisgod.kozenlib.core.network.models.MemoryPinData;
 import com.lovisgod.kozenlib.core.network.models.StringManipulator;
+import com.lovisgod.kozenlib.core.utilities.DeviceUtilsKozen;
 import com.lovisgod.kozenlib.core.utilities.HexUtil;
 import com.isw.pinencrypter.Converter;
 import com.pixplicity.easyprefs.library.Prefs;
@@ -67,6 +68,7 @@ public class PasswordDialog {
 
     private String title;
     private String message;
+    private String amount;
 
     private POIHsmManage     hsmManage;
     private PinEventListener pinEventListener;
@@ -80,21 +82,22 @@ public class PasswordDialog {
     private ImageView btnClear;
     private TextView  btnEsc, btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
-    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode) {
+    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode, String amount) {
 
+        System.out.println("key index" + keyIndex);
         LayoutInflater inflater = LayoutInflater.from(context);
         ConstraintLayout view = (ConstraintLayout) inflater.inflate(R.layout.layout_password_new, null);
         instantiateViews(view);
 
         this.hsmManage = POIHsmManage.getDefault();
         this.pinEventListener = new PinEventListener();
+        this.amount = amount;
         if (isIcSlot) {
             this.icSlot = 0;
         } else {
             this.icSlot = 10;
         }
         this.keyIndex = keyIndex;
-        this.keyMode = pinMode;
 
         switch (bundle.getInt(EmvPinConstraints.PIN_TYPE, -1)) {
             case POIEmvCoreManager.PIN_PLAIN_PIN:
@@ -115,7 +118,6 @@ public class PasswordDialog {
         }
         if (bundle.containsKey(EmvPinConstraints.PIN_CARD)) {
             pinCard = bundle.getString(EmvPinConstraints.PIN_CARD);
-            System.out.println("pin card => " + pinCard);
         }
         if (bundle.containsKey(EmvPinConstraints.PIN_BYPASS)) {
             pinBypass = bundle.getBoolean(EmvPinConstraints.PIN_BYPASS);
@@ -125,7 +127,6 @@ public class PasswordDialog {
         }
         if (bundle.containsKey(EmvPinConstraints.PIN_CARD_RANDOM)) {
             pinRandom = bundle.getByteArray(EmvPinConstraints.PIN_CARD_RANDOM);
-            System.out.println("pin card random => " + pinCard);
         }
         if (bundle.containsKey(EmvPinConstraints.PIN_MODULE)) {
             pinModule = bundle.getByteArray(EmvPinConstraints.PIN_MODULE);
@@ -165,7 +166,7 @@ public class PasswordDialog {
                 break;
         }
 
-        Group groupKeyboard = view.findViewById(R.id.groupKeyboard);
+        View groupKeyboard = view.findViewById(R.id.layoutKeyboard);
 //        if (Constants.INSTANCE.isHardWareKeyBoard()) {
 //            groupKeyboard.setVisibility(View.VISIBLE);
 //        }
@@ -173,7 +174,22 @@ public class PasswordDialog {
         tvTitle.setText(title);
         tvMessage.setText(message);
 
-        System.out.println("context: " + context);
+        if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
+            System.out.println("device is p13 hide pin");
+            btn0.setVisibility(View.GONE);
+            btn1.setVisibility(View.GONE);
+            btn2.setVisibility(View.GONE);
+            btn3.setVisibility(View.GONE);
+            btn4.setVisibility(View.GONE);
+            btn5.setVisibility(View.GONE);
+            btn6.setVisibility(View.GONE);
+            btn7.setVisibility(View.GONE);
+            btn8.setVisibility(View.GONE);
+            btn9.setVisibility(View.GONE);
+            btnEsc.setVisibility(View.GONE);
+            btnClear.setVisibility(View.GONE);
+            btnConfirm.setVisibility(View.GONE);
+        }
 
         dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -186,9 +202,7 @@ public class PasswordDialog {
         window.setAttributes(wlp);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         window.setGravity(Gravity.BOTTOM);
-
-//        handleKeyInput();
-
+        dialog.show();
 
     }
 
@@ -335,8 +349,14 @@ public class PasswordDialog {
             String KSNX = Prefs.getString("KSN", "");
             String newKSN = KSNX + Constants.INSTANCE.getNextKsnCounter();
 
-            String block = Converter.INSTANCE.GetPinBlock(IPEKK, newKSN, pinX, pinCard);
-            onPinSuccessISW(block, StringManipulator.INSTANCE.dropFirstCharacter(newKSN));
+            if (pinType == ENCIPHER_PIN) {
+                  onVerifyEncipherPinNew();
+            } else if (pinType == PLAIN_PIN) {
+
+            } else {
+                String block = Converter.INSTANCE.GetPinBlock(IPEKK, newKSN, pinX, pinCard);
+                onPinSuccessISW(block, StringManipulator.INSTANCE.dropFirstCharacter(newKSN));
+            }
             dialog.dismiss();
         });
 
@@ -371,13 +391,30 @@ public class PasswordDialog {
     }
 
     private int onVerifyPlainPin() {
-        dialog.show();
+//        dialog.show();
         hsmManage.registerListener(pinEventListener);
         return hsmManage.PedVerifyPlainPin(icSlot, 0, DEFAULT_TIMEOUT_MS, DEFAULT_EXP_PIN_LEN_IND);
     }
 
     private int onVerifyEncipherPin() {
-        dialog.show();
+//        dialog.show();
+        hsmManage.registerListener(pinEventListener);
+        if (pinModule == null) {
+            return -1;
+        }
+        byte[] module = new byte[pinModule.length];
+        byte[] exponent = new byte[pinExponent.length];
+        byte[] random = new byte[pinRandom.length];
+        System.arraycopy(pinModule, 0, module, 0, pinModule.length);
+        System.arraycopy(pinExponent, 0, exponent, 0, pinExponent.length);
+        System.arraycopy(pinRandom, 0, random, 0, pinRandom.length);
+
+        PedRsaPinKey rsaPinKey = new PedRsaPinKey(module, exponent, random);
+        return hsmManage.PedVerifyCipherPin(icSlot, 0, DEFAULT_TIMEOUT_MS, DEFAULT_EXP_PIN_LEN_IND, rsaPinKey);
+    }
+
+    private int onVerifyEncipherPinNew() {
+//        dialog.show();
         hsmManage.registerListener(pinEventListener);
         if (pinModule == null) {
             return -1;
@@ -395,7 +432,7 @@ public class PasswordDialog {
 
     private int onOnlinePin() {
 
-        dialog.show();
+//        dialog.show();
 //        handleKeyInput();
         hsmManage.registerListener(pinEventListener);
 
@@ -411,13 +448,7 @@ public class PasswordDialog {
         byte[] formatData = {0, 0, 0, 0, 0, 0, 0, 0};
         System.arraycopy(formatData, 0, data, 16, 8);
 
-        int ret  = hsmManage.PedGetPinBlock(keyMode, keyIndex,
-                0,
-                DEFAULT_TIMEOUT_MS,
-                data, DEFAULT_EXP_PIN_LEN_IND);
-
-        System.out.println("pin block ret => " + ret);
-        return  0;
+        return hsmManage.PedGetPinBlock(keyMode, keyIndex, 0, DEFAULT_TIMEOUT_MS, data, DEFAULT_EXP_PIN_LEN_IND);
     }
 
     private class PinEventListener implements POIHsmManage.EventListener {
@@ -426,6 +457,7 @@ public class PasswordDialog {
 
         @Override
         public void onPedVerifyPin(POIHsmManage manage, int type, byte[] rspBuf) {
+            System.out.println("verify pin is being called");
             if (type == POIHsmManage.PED_VERIFY_PIN_TYPE_PLAIN || type == POIHsmManage.PED_VERIFY_PIN_TYPE_CIPHER) {
                 int sw1 = (rspBuf[1] >= 0 ? rspBuf[1] : (rspBuf[1] + 256));
                 int sw2 = (rspBuf[2] >= 0 ? rspBuf[2] : (rspBuf[2] + 256));
