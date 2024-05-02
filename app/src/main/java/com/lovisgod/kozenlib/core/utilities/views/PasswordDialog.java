@@ -77,6 +77,7 @@ public class PasswordDialog {
     private TextView  tvMessage;
     private TextView  tvError;
     private TextView  tvTitle;
+    private TextView  tvPinLabelDesc;
     private MaterialTextView tvPin;
     private Button    btnConfirm;
     private ImageView btnClear;
@@ -173,6 +174,7 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
+        tvPinLabelDesc.setText("Please enter your Card Pin to authorise and complete your payment of N " + amount);
 
         if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
             System.out.println("device is p13 hide pin");
@@ -210,6 +212,7 @@ public class PasswordDialog {
         tvTitle = view.findViewById(R.id.tvTitle);
         tvMessage = view.findViewById(R.id.tvMessage);
         tvError = view.findViewById(R.id.tvError);
+        tvPinLabelDesc = view.findViewById(R.id.tvPinLabelDesc);
         tvPin = view.findViewById(R.id.tvPin);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         btnClear = view.findViewById(R.id.btnClear);
