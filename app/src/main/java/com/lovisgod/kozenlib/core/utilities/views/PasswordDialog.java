@@ -290,10 +290,16 @@ public class PasswordDialog {
                 ivCardImage.setImageResource(R.drawable.isw_card_mastercard);
                 break;
             case INTERAC:
-                ivCardImage.setImageResource(R.drawable.isw_card_unionpay);
+                ivCardImage.setImageResource(R.drawable.isw_card_interac);
                 break;
             case AFRIGO:
                 ivCardImage.setImageResource(R.drawable.isw_card_afrigo);
+                break;
+            case AMERICAN_EXPRESS:
+                ivCardImage.setImageResource(R.drawable.isw_card_amex);
+                break;
+            case UNIONPAY:
+                ivCardImage.setImageResource(R.drawable.isw_card_unionpay);
                 break;
             case DEFAULT:
                 ivCardImage.setImageResource(R.drawable.isw_ic_card);

@@ -23,6 +23,7 @@ object CardTypeUtils {
         if(PATTERN_VERVE.toRegex().matches(cardPan)) return EmvCardType.VERVE
         if(PATTERN_CUP.toRegex().matches(cardPan)) return EmvCardType.INTERAC
         if(PATTERN_AFRIGO.toRegex().matches(cardPan)) return EmvCardType.AFRIGO
+        if(PATTERN_UNION_PAY.toRegex().matches(cardPan)) return EmvCardType.UNIONPAY
 
         return EmvCardType.DEFAULT
     }
