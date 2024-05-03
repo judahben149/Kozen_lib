@@ -65,7 +65,7 @@ public class PasswordDialog {
     private int keyMode = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK;
     private int icSlot;
 
-    private boolean isKeyboardFix = false;
+    private boolean isKeyboardFix = true;
     private boolean isEncrypt;
     private String  pinCard;
     private int     pinType;
