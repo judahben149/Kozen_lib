@@ -190,7 +190,7 @@ class EmvHandler {
                 val isIcSlot = cardType == POIEmvCoreManager.DEVICE_CONTACT
                 val dialog =
                     PasswordDialog( this@EmvHandler.context, isIcSlot,
-                        bundle, pinKey!!, pinMode!!, transAmount)
+                        bundle, pinKey!!, pinMode!!, transAmount, emvCardType)
                 dialog.showDialog()
             }
 
