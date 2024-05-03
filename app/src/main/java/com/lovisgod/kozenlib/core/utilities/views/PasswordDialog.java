@@ -281,6 +281,9 @@ public class PasswordDialog {
             case AFRIGO:
                 ivCardImage.setImageResource(R.drawable.isw_card_afrigo);
                 break;
+            case DEFAULT:
+                ivCardImage.setImageResource(R.drawable.isw_ic_card);
+                break;
         }
 
     }
