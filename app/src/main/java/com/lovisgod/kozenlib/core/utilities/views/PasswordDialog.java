@@ -32,6 +32,8 @@ import androidx.constraintlayout.widget.Group;
 import com.google.android.material.textview.MaterialTextView;
 import com.interswitchng.smartpos.shared.utilities.console;
 import com.lovisgod.kozenlib.R;
+import com.lovisgod.kozenlib.core.data.models.CardType;
+import com.lovisgod.kozenlib.core.data.models.EmvCardType;
 import com.lovisgod.kozenlib.core.data.utilsData.Constants;
 import com.lovisgod.kozenlib.core.data.utilsData.KeysUtils;
 import com.lovisgod.kozenlib.core.network.models.MemoryPinData;
@@ -77,6 +79,7 @@ public class PasswordDialog {
     private String title;
     private String message;
     private String amount;
+    private EmvCardType cardType;
 
     private POIHsmManage     hsmManage;
     private PinEventListener pinEventListener;
@@ -90,10 +93,11 @@ public class PasswordDialog {
     private CardView btnConfirm;
     private CardView btnClear;
     private ImageView  btnEsc;
+    private ImageView  ivCardImage;
     private ConstraintLayout  layoutKeypad;
     private CardView btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
 
-    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode, String amount) {
+    public PasswordDialog(Context context, boolean isIcSlot, Bundle bundle, int keyIndex, int pinMode, String amount, EmvCardType cardType) {
 
         System.out.println("key index" + keyIndex);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -103,6 +107,8 @@ public class PasswordDialog {
         this.hsmManage = POIHsmManage.getDefault();
         this.pinEventListener = new PinEventListener();
         this.amount = amount;
+        this.cardType = cardType;
+
         if (isIcSlot) {
             this.icSlot = 0;
         } else {
@@ -184,7 +190,8 @@ public class PasswordDialog {
 
         tvTitle.setText(title);
         tvMessage.setText(message);
-        setAmountSpannableString(amount);
+        setAmountSpannableString();
+        setCardTypeDrawable();
 //        tvPinLabelDesc.setText("Please enter your Card Pin to authorise and complete your payment of N " + amount);
 
         if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
@@ -222,6 +229,7 @@ public class PasswordDialog {
 
     public void instantiateViews(ConstraintLayout view) {
         layoutKeypad = view.findViewById(R.id.layout_keypad);
+        ivCardImage = view.findViewById(R.id.ivCardImage);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvMessage = view.findViewById(R.id.tvMessage);
         tvError = view.findViewById(R.id.tvError);
@@ -242,7 +250,7 @@ public class PasswordDialog {
         btn9 = view.findViewById(R.id.btn9);
     }
 
-    public void setAmountSpannableString(String amount) {
+    public void setAmountSpannableString() {
         String amountString = "Please enter your Card Pin to authorise and complete your payment of ";
         SpannableStringBuilder spannableString = new SpannableStringBuilder(amountString);
 
@@ -254,6 +262,27 @@ public class PasswordDialog {
         spannableString.append(amountSpan);
 
         tvPinLabelDesc.setText(spannableString);
+    }
+
+    public void setCardTypeDrawable() {
+        switch (cardType) {
+            case VERVE:
+                ivCardImage.setImageResource(R.drawable.isw_card_verve);
+                break;
+            case VISA:
+                ivCardImage.setImageResource(R.drawable.isw_card_visa);
+                break;
+            case MASTERCARD:
+                ivCardImage.setImageResource(R.drawable.isw_card_mastercard);
+                break;
+            case INTERAC:
+                ivCardImage.setImageResource(R.drawable.isw_card_unionpay);
+                break;
+            case AFRIGO:
+                ivCardImage.setImageResource(R.drawable.isw_card_afrigo);
+                break;
+        }
+
     }
 
     public void checkPinInput(){
