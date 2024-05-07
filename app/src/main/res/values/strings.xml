@@ -30,7 +30,7 @@
     <string name="isw_hint_select_bank_hint">Select Customer\'s Preferred Bank</string>
     <string name="isw_hint_enter_ussd_code">Enter this code: %1$s to pay using Quickteller</string>
     <string name="back_button">Back Button</string>
-    <string name="enter_your_pin">Enter your pin</string>
+    <string name="enter_your_pin">Enter your PIN</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
@@ -45,5 +45,5 @@
     <string name="enter_button">Enter Button</string>
     <string name="card_icon">Card Icon</string>
     <string name="pin">PIN - </string>
-    <string name="enter_pin">Enter Pin</string>
+    <string name="enter_pin">Enter PIN</string>
 </resources>

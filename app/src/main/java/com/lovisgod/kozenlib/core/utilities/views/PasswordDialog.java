@@ -193,7 +193,6 @@ public class PasswordDialog {
         tvMessage.setText(message);
         setAmountSpannableString();
         setCardTypeDrawable();
-//        tvPinLabelDesc.setText("Please enter your Card Pin to authorise and complete your payment of N " + amount);
 
         if (DeviceUtilsKozen.INSTANCE.getDeviceModel()) { // i.e the device model is p13
             System.out.println("device is p13 hide pin");
@@ -265,7 +264,7 @@ public class PasswordDialog {
     }
 
     public void setAmountSpannableString() {
-        String amountString = "Please enter your Card Pin to authorise and complete your payment of ";
+        String amountString = "Please enter your Card PIN to authorise and complete your payment of ";
         SpannableStringBuilder spannableString = new SpannableStringBuilder(amountString);
 
         String amountWithCurrency = "₦ " + amount;
