@@ -159,7 +159,7 @@ class CardCheckerHandler {
         }
 
         override fun onRequestOnlineProcess(bundle: Bundle) {
-
+            emvCoreManager?.stopTransaction()
         }
 
         override fun onTransactionResult(result: Int, bundle: Bundle) {
