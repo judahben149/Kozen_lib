@@ -7,7 +7,7 @@ import com.lovisgod.kozenlib.core.data.utilsData.RequestIccData
 interface EMVEvents {
 
     fun onInsertCard()
-    fun onRemoveCard()
+    fun onRemoveCard(isContactlessTransLimit: Boolean, message: String)
     fun onPinInput()
     fun onCardRead(pan: String, cardType: EmvCardType)
     fun onCardDetected(contact: Boolean = true)

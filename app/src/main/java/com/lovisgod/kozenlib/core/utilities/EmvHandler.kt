@@ -308,13 +308,13 @@ class EmvHandler {
                 PosEmvErrorCode.EMV_CANCEL, PosEmvErrorCode.EMV_TIMEOUT -> {
 //                    onTransEnd()
                     println("transaction timed out")
-                    this@EmvHandler.emvEvents?.onRemoveCard()
+                    this@EmvHandler.emvEvents?.onRemoveCard(false, "")
                     return
                 }
 
                 PosEmvErrorCode.EMV_TERMINATED, PosEmvErrorCode.EMV_COMMAND_FAIL -> {
                     println("An emv error just occurred")
-                    this@EmvHandler.emvEvents?.onRemoveCard()
+                    this@EmvHandler.emvEvents?.onRemoveCard(false, "")
 
                     return
                 }
@@ -446,6 +446,7 @@ class EmvHandler {
                     }
                     PosEmvErrorCode.EMV_OTHER_ICC_INTERFACE -> {
                         console.log("result", "Please Insert Card")
+                        this@EmvHandler.emvEvents?.onRemoveCard(true, "Contactless Transaction Limit Exceeded")
                     }
                     PosEmvErrorCode.EMV_APP_EMPTY -> {
                         console.log("result","Please Magnetic Stripe")
