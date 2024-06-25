@@ -65,7 +65,7 @@ public class PasswordDialog {
     private int keyMode = POIHsmManage.PED_PINBLOCK_FETCH_MODE_TPK;
     private int icSlot;
 
-    private boolean isKeyboardFix = true;
+    private boolean isKeyboardFix = false;
     private boolean isEncrypt;
     private String  pinCard;
     private int     pinType;
@@ -866,7 +866,6 @@ public class PasswordDialog {
                 if (value.equals(esc)) {
                     tv = btnEsc;
                 } else {
-                    // COME BACK HERE OOOO JUDAH
                     keyView[viewIndex].setText(value);
                     tv = keyViewCard[viewIndex++];
                 }
