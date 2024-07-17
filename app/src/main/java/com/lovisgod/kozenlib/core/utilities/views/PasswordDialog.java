@@ -644,14 +644,14 @@ public class PasswordDialog {
                     closeDialog();
                     return;
                 case 0xFFFC:
-                    System.out.println("The terminal triggers a security check.");
+                    System.out.println("Security trigger - The card has been removed");
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("The terminal triggers a security check.");
+                    tvError.setText("Security trigger - The card has been removed");
                     break;
                 case 0xFED3:
-                    System.out.println("TThe terminal did not write the PIN key. Please check.");
+                    System.out.println("Security trigger - The terminal did not write the PIN key");
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("The terminal did not write the PIN key. Please check.");
+                    tvError.setText("Security trigger - The terminal did not write the PIN key");
                     break;
                 case 0XFECF:
                     if (pinBypass) {
