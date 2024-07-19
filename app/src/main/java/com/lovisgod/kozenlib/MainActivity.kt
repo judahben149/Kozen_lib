@@ -73,10 +73,6 @@ class MainActivity : AppCompatActivity(), EMVEvents, PrinterEvent {
         println(message)
     }
 
-    override fun onTransactionTimedOut(message: String) {
-        println(message)
-    }
-
     override fun onTransactionCancelled(message: String) {
         println(message)
     }

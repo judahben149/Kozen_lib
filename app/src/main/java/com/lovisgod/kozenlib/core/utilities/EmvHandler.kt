@@ -325,19 +325,19 @@ class EmvHandler {
 
                 PosEmvErrorCode.EMV_TIMEOUT -> {
                     println("Transaction timed out")
-                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
+                    this@EmvHandler.emvEvents?.onTransactionCancelled()
                     return
                 }
 
                 PosEmvErrorCode.EMV_TERMINATED -> {
                     println("An emv error just occurred")
-                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
+                    this@EmvHandler.emvEvents?.onTransactionCancelled("Transaction terminated")
                     return
                 }
 
                 PosEmvErrorCode.EMV_COMMAND_FAIL -> {
                     println("An emv error just occurred")
-                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
+                    this@EmvHandler.emvEvents?.onTransactionCancelled("EMV Error Occurred")
                     return
                 }
 

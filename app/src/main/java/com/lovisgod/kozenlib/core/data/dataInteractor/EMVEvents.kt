@@ -14,6 +14,5 @@ interface EMVEvents {
     fun onEmvProcessing(message: String = "Please wait while we read card")
     fun onEmvProcessed(data: Any)
     fun onUserCanceled(message: String = "User interrupted the transaction")
-    fun onTransactionTimedOut(message: String = "Transaction timed out. Please retry")
-    fun onTransactionCancelled(message: String = "Transaction cancelled. Please retry")
+    fun onTransactionCancelled(message: String = "Transaction cancelled")
 }

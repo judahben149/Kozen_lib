@@ -172,7 +172,7 @@ class CardCheckerHandler {
 
                 PosEmvErrorCode.EMV_TIMEOUT -> {
                     println("Transaction timed out")
-                    this@CardCheckerHandler.emvEvents?.onTransactionTimedOut()
+                    this@CardCheckerHandler.emvEvents?.onTransactionCancelled()
                     return
                 }
 
@@ -181,7 +181,10 @@ class CardCheckerHandler {
                     this@CardCheckerHandler.emvEvents?.onTransactionCancelled("Use Other ICC Interface - test")
                 }
 
-                PosEmvErrorCode.EMV_COMMAND_FAIL,
+                PosEmvErrorCode.EMV_COMMAND_FAIL -> {
+                    this@CardCheckerHandler.emvEvents?.onTransactionCancelled("Transaction Cancelled - EMV Command Failed")
+                }
+
                 PosEmvErrorCode.EMV_NOT_ALLOWED,
                 PosEmvErrorCode.EMV_APP_EMPTY,
                 PosEmvErrorCode.EMV_NOT_ACCEPTED -> {
