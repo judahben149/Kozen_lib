@@ -164,23 +164,29 @@ class CardCheckerHandler {
 
 
             when (result) {
-                PosEmvErrorCode.EMV_CANCEL, PosEmvErrorCode.EMV_TIMEOUT -> {
-//                    onTransEnd()
-                    println("transaction timed out")
-                    this@CardCheckerHandler.emvEvents?.onRemoveCard(false, "")
+                PosEmvErrorCode.EMV_CANCEL -> {
+                    println("Transaction cancelled")
+                    this@CardCheckerHandler.emvEvents?.onTransactionCancelled()
+                    return
+                }
+
+                PosEmvErrorCode.EMV_TIMEOUT -> {
+                    println("Transaction timed out")
+                    this@CardCheckerHandler.emvEvents?.onTransactionTimedOut()
                     return
                 }
 
                 PosEmvErrorCode.EMV_OTHER_INTERFACE -> {
-                    this@CardCheckerHandler.emvEvents?.onRemoveCard(true, "Contactless Transaction Limit Exceeded")
+//                    this@CardCheckerHandler.emvEvents?.onRemoveCard(true, "Contactless Transaction Limit Exceeded")
+                    this@CardCheckerHandler.emvEvents?.onTransactionCancelled("Use Other ICC Interface - test")
                 }
 
                 PosEmvErrorCode.EMV_COMMAND_FAIL,
                 PosEmvErrorCode.EMV_NOT_ALLOWED,
                 PosEmvErrorCode.EMV_APP_EMPTY,
                 PosEmvErrorCode.EMV_NOT_ACCEPTED -> {
-                    println("An emv error just occurred ::::: ${result}")
-                    this@CardCheckerHandler.emvEvents?.onRemoveCard(false, "")
+                    println("Transaction cancelled")
+                    this@CardCheckerHandler.emvEvents?.onTransactionCancelled("User interrupted the transaction")
                     return
                 }
                 else -> {

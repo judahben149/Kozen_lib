@@ -69,6 +69,18 @@ class MainActivity : AppCompatActivity(), EMVEvents, PrinterEvent {
         println("emv processed is called")
     }
 
+    override fun onUserCanceled(message: String) {
+        println(message)
+    }
+
+    override fun onTransactionTimedOut(message: String) {
+        println(message)
+    }
+
+    override fun onTransactionCancelled(message: String) {
+        println(message)
+    }
+
     override fun onPrintSuccess(code: Int) {
         println("print status:::: $code")
     }

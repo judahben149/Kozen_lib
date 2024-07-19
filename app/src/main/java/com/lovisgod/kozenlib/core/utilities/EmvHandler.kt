@@ -317,19 +317,31 @@ class EmvHandler {
         override fun onTransactionResult(result: Int, bundle: Bundle) {
             Log.d(TAG, "onTransactionResult $result")
             when (result) {
-                PosEmvErrorCode.EMV_CANCEL, PosEmvErrorCode.EMV_TIMEOUT -> {
-//                    onTransEnd()
-                    println("transaction timed out")
-                    this@EmvHandler.emvEvents?.onRemoveCard(false, "")
+                PosEmvErrorCode.EMV_CANCEL -> {
+                    println("Transaction Cancelled")
+                    this@EmvHandler.emvEvents?.onUserCanceled()
                     return
                 }
 
-                PosEmvErrorCode.EMV_TERMINATED, PosEmvErrorCode.EMV_COMMAND_FAIL -> {
+                PosEmvErrorCode.EMV_TIMEOUT -> {
+                    println("Transaction timed out")
+                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
+                    return
+                }
+
+                PosEmvErrorCode.EMV_TERMINATED -> {
                     println("An emv error just occurred")
-                    this@EmvHandler.emvEvents?.onRemoveCard(false, "")
-
+                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
                     return
                 }
+
+                PosEmvErrorCode.EMV_COMMAND_FAIL -> {
+                    println("An emv error just occurred")
+                    this@EmvHandler.emvEvents?.onTransactionTimedOut()
+                    return
+                }
+
+
                 else -> {
                 }
             }
@@ -449,21 +461,27 @@ class EmvHandler {
                 }
                 when (result) {
                     PosEmvErrorCode.EMV_MULTI_CONTACTLESS -> {
-                        console.log("result","multi contactless")
+                        console.log("result","Multiple Contactless Cards Detected")
+                        this@EmvHandler.emvEvents?.onTransactionCancelled("Multiple Contactless Cards Detected")
                     }
-                    PosEmvErrorCode.EMV_FALLBACK -> {
 
+                    PosEmvErrorCode.EMV_FALLBACK -> {
                         console.log("result", "Please Magnetic Stripe")
                         console.log("result", "FallBack")
+                        this@EmvHandler.emvEvents?.onTransactionCancelled("Transaction cancelled. Insert Card")
                     }
+
                     PosEmvErrorCode.EMV_OTHER_ICC_INTERFACE -> {
                         console.log("result", "Please Insert Card")
-                        this@EmvHandler.emvEvents?.onRemoveCard(true, "Contactless Transaction Limit Exceeded")
+//                        this@EmvHandler.emvEvents?.onRemoveCard(true, "Contactless Transaction Limit Exceeded")
+                        this@EmvHandler.emvEvents?.onTransactionCancelled("Use Other ICC Interface - test")
                     }
+
                     PosEmvErrorCode.EMV_APP_EMPTY -> {
                         console.log("result","Please Magnetic Stripe")
                         console.log("result","AID Empty")
                     }
+
                     PosEmvErrorCode.EMV_SEE_PHONE, PosEmvErrorCode.APPLE_VAS_WAITING_INTERVENTION, PosEmvErrorCode.APPLE_VAS_WAITING_ACTIVATION -> {
                         console.log("result","Please See Phone")
                     }
