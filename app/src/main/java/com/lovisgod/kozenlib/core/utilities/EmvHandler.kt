@@ -101,14 +101,14 @@ class EmvHandler {
             bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.TRANS_TIMEOUT, 60)
             bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, false)
             bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, false)
-            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.USE_SELECT_KERNEL, true)
+//            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.USE_SELECT_KERNEL, true)
 
             // Adds a delay after the card is detected before command interchange between the card and terminal begins
             // Serves to fix a bug where the card chip sometimes does not have sufficient time to power up before the Terminal starts to send commands
-            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, true)
-            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, true)
-            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT_TIME, 1000)
-            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE_TIME, 1000)
+//            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, true)
+//            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, true)
+//            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT_TIME, 1000)
+//            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE_TIME, 1000)
 
             transData?.setTransType(transType)
             transData?.setTransAmount(amount.toDouble())
@@ -178,9 +178,9 @@ class EmvHandler {
                 outBundle.putBoolean(POIEmvCoreManager.EmvCardInfoConstraints.OUT_CONFIRM, true)
             } else if (mode == POIEmvCoreManager.CMD_ISSUER_REFERRAL) {
                 outBundle.putBoolean(POIEmvCoreManager.EmvCardInfoConstraints.OUT_CONFIRM, true)
-            } else if (mode == POIEmvCoreManager.CMD_SELECT_KERNEL) {
-                val data = bundle!!.getByteArray(POIEmvCoreManager.EmvCardInfoConstraints.DATA)
-                SelectKernelUtils.doSelectKernel(data)
+//            } else if (mode == POIEmvCoreManager.CMD_SELECT_KERNEL) {
+//                val data = bundle!!.getByteArray(POIEmvCoreManager.EmvCardInfoConstraints.DATA)
+//                SelectKernelUtils.doSelectKernel(data)
             }
             emvCoreManager?.onSetCardInfoResponse(outBundle)
         }
