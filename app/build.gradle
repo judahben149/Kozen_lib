@@ -27,10 +27,6 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'ISWKozenOSSignature'
-            keyPassword 'ISWKozen2024'
-            storeFile file('kozen2024.jks')
-            storePassword 'ISWKozen2024'
         }
     }
 
