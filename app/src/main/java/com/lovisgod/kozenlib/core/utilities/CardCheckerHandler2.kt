@@ -80,8 +80,16 @@ class CardCheckerHandler2 {
             bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.TRANS_MODE, mode)
 
             bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.TRANS_TIMEOUT, 60)
-            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, false)
-            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, false)
+//            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, false)
+//            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, false)
+
+
+            // Adds a delay after the card is detected before command interchange between the card and terminal begins
+            // Serves to fix a bug where the card chip sometimes does not have sufficient time to power up before the Terminal starts to send commands
+            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT, true)
+            bundle.putBoolean(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE, true)
+            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_CONTACT_TIME, 1000)
+            bundle.putInt(POIEmvCoreManager.EmvTransDataConstraints.SPECIAL_MAGSTRIPE_TIME, 1000)
 
             // check if it gets here
             val result = emvCoreManager!!.startTransaction(bundle, emvCoreListener)
