@@ -86,35 +86,35 @@ object DependencyContainer {
     }
 
     // Lazy initialization for singletons
-    private val iswDataConfig by lazy { IswDataConfig(applicationContext) }
-    private val iswDetailsAndKeys by lazy { IswDetailsAndKeysImpl(authInterfaceKozen, kimonoInterfaceKozen) }
-    private val iswConfigSourceInteractor by lazy { IswConfigSourceInteractor(iswDataConfig) }
-    private val iswDetailsAndKeySourceInteractor by lazy { IswDetailsAndKeySourceInteractor(iswDetailsAndKeys) }
-    private val iswPrinter by lazy { IswPrinterImpl() }
-    private val iswPrinterInteractor by lazy { IswPrinterInteractor(iswPrinter) }
-    private val emvHandler by lazy { EmvHandler() }
-    private val cardCheckerHandler2 by lazy { CardCheckerHandler2() }
-    private val iswTransactionInteractor by lazy { IswTransactionInteractor(createIswTransactionDataSource()) }
-    private val iswTransactionDataSource by lazy { createIswTransactionDataSource() }
+    private val depIswDataConfig by lazy { IswDataConfig(applicationContext) }
+    private val depIswDetailsAndKeys by lazy { IswDetailsAndKeysImpl(authInterfaceKozen, kimonoInterfaceKozen) }
+    private val depIswConfigSourceInteractor by lazy { IswConfigSourceInteractor(depIswDataConfig) }
+    private val depIswDetailsAndKeySourceInteractor by lazy { IswDetailsAndKeySourceInteractor(depIswDetailsAndKeys) }
+    private val depIswPrinter by lazy { IswPrinterImpl() }
+    private val depIswPrinterInteractor by lazy { IswPrinterInteractor(depIswPrinter) }
+    private val depEmvHandler by lazy { EmvHandler() }
+    private val depCardCheckerHandler2 by lazy { CardCheckerHandler2() }
+    private val depIswTransactionInteractor by lazy { IswTransactionInteractor(createIswTransactionDataSource()) }
+    private val depIswTransactionDataSource by lazy { createIswTransactionDataSource() }
 
     fun init(context: Context) {
         applicationContext = context.applicationContext
     }
 
     // Singleton accessors
-    fun getIswDataConfig(): IswDataConfig = iswDataConfig
-    fun getIswDetailsAndKeys(): IswDetailsAndKeysImpl = iswDetailsAndKeys
-    fun getIswConfigSourceInteractor(): IswConfigSourceInteractor = iswConfigSourceInteractor
-    fun getIswDetailsAndKeySourceInteractor(): IswDetailsAndKeySourceInteractor = iswDetailsAndKeySourceInteractor
-    fun getIswPrinter(): IswPrinterImpl = iswPrinter
-    fun getIswPrinterInteractor(): IswPrinterInteractor = iswPrinterInteractor
-    fun getIswTransactionInteractor(): IswTransactionInteractor = iswTransactionInteractor
-    fun getIswTransactionDataSource(): IswTransactionDataSource = iswTransactionDataSource
+    fun getIswDataConfig(): IswDataConfig = depIswDataConfig
+    fun getIswDetailsAndKeys(): IswDetailsAndKeysImpl = depIswDetailsAndKeys
+    fun getIswConfigSourceInteractor(): IswConfigSourceInteractor = depIswConfigSourceInteractor
+    fun getIswDetailsAndKeySourceInteractor(): IswDetailsAndKeySourceInteractor = depIswDetailsAndKeySourceInteractor
+    fun getIswPrinter(): IswPrinterImpl = depIswPrinter
+    fun getIswPrinterInteractor(): IswPrinterInteractor = depIswPrinterInteractor
+    fun getIswTransactionInteractor(): IswTransactionInteractor = depIswTransactionInteractor
+    fun getIswTransactionDataSource(): IswTransactionDataSource = depIswTransactionDataSource
 
     // Factory methods
     fun createIswConfigDataSource(): IswConfigDataSource = IswDataConfig(applicationContext)
     fun createIswDetailsAndKeyDataSource(): IswDetailsAndKeyDataSource = IswDetailsAndKeysImpl(
         authInterfaceKozen, kimonoInterfaceKozen)
     fun createIswPrinterDataSource(): IswPrinterDataSource = IswPrinterImpl()
-    fun createIswTransactionDataSource(): IswTransactionDataSource = IswTransactionImpl(emvHandler, cardCheckerHandler2)
+    fun createIswTransactionDataSource(): IswTransactionDataSource = IswTransactionImpl(depEmvHandler, depCardCheckerHandler2)
 }

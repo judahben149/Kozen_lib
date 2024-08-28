@@ -8,7 +8,7 @@ import com.lovisgod.kozenlib.core.data.models.TerminalInfo
 import com.lovisgod.kozenlib.core.data.utilsData.Constants.TERMINAL_INFO_KEY
 import com.lovisgod.kozenlib.core.data.utilsData.Constants.TOKEN
 import com.lovisgod.kozenlib.core.network.AuthInterfaceKozen
-import com.lovisgod.kozenlib.core.network.kimonoInterfaceKozen
+import com.lovisgod.kozenlib.core.network.KimonoInterfaceKozen
 import com.lovisgod.kozenlib.core.network.models.TokenRequestModelKozen
 import com.lovisgod.kozenlib.core.network.models.convertConfigResponseToAllTerminalInfo
 import com.lovisgod.kozenlib.core.utilities.HexUtil
@@ -20,7 +20,7 @@ import com.pos.sdk.security.PedKeyInfo
 import kotlin.jvm.Throws
 
 class IswDetailsAndKeysImpl(val authInterfaceKozen: AuthInterfaceKozen,
-                            val kimonoInterfaceKozen: kimonoInterfaceKozen): IswDetailsAndKeyDataSource {
+                            val kimonoInterfaceKozen: KimonoInterfaceKozen): IswDetailsAndKeyDataSource {
     override suspend fun writeDukPtKey(keyIndex: Int, keyData: String, KsnData: String): Int {
         Log.d("KSN", "KSN $KsnData")
         val kcvInfo = PedKcvInfo(0, ByteArray(5))
