@@ -4,7 +4,7 @@ package com.lovisgod.kozenlib.di
 import com.lovisgod.kozenlib.core.data.utilsData.Constants
 import com.lovisgod.kozenlib.core.network.AuthInterfaceKozen
 //import com.lovisgod.kozenlib.core.network.CardLess.UserStore
-import com.lovisgod.kozenlib.core.network.kimonoInterfaceKozen
+import com.lovisgod.kozenlib.core.network.KimonoInterfaceKozen
 import com.lovisgod.kozenlib.core.utilities.simplecalladapter.SimpleCallAdapterFactory
 import com.pixplicity.easyprefs.library.Prefs
 import okhttp3.Interceptor
@@ -131,7 +131,7 @@ val networkModule = module {
 
 
         val retrofit: Retrofit = builder.build()
-        return@single retrofit.create(kimonoInterfaceKozen::class.java)
+        return@single retrofit.create(KimonoInterfaceKozen::class.java)
     }
 
 
