@@ -22,18 +22,28 @@ import kotlin.jvm.Throws
 class IswDetailsAndKeysImpl(val authInterfaceKozen: AuthInterfaceKozen,
                             val kimonoInterfaceKozen: KimonoInterfaceKozen): IswDetailsAndKeyDataSource {
     override suspend fun writeDukPtKey(keyIndex: Int, keyData: String, KsnData: String): Int {
-        Log.d("KSN", "KSN $KsnData")
         val kcvInfo = PedKcvInfo(0, ByteArray(5))
 //        Prefs.putString("IPEK", keyData)
 //        Prefs.putString("KSN", KsnData.dropLast(1))
-        return POIHsmManage.getDefault().PedWriteTIK(
+
+        val hexData = padArray(HexUtil.parseHex(keyData), 16)
+
+        val writeDukptResult = POIHsmManage.getDefault().PedWriteTIK(
             keyIndex,
             0,
-            8,
-            HexUtil.parseHex(keyData),
+            hexData.size,
+            hexData,
             HexUtil.parseHex(KsnData),
             kcvInfo
         )
+
+        return writeDukptResult
+    }
+
+    private fun padArray(original: ByteArray, targetSize: Int, paddingByte: Byte = 0xFF.toByte()): ByteArray {
+        return ByteArray(targetSize) { i ->
+            if (i < original.size) original[i] else paddingByte
+        }
     }
 
     override suspend fun writePinKey(keyIndex: Int, keyData: String): Int {
