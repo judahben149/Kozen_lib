@@ -125,7 +125,7 @@ dependencies {
 
 
     // kotlin optional lib
-    implementation "com.gojuno.koptional:koptional:1.6.0"
+//    implementation "com.gojuno.koptional:koptional:1.6.0"
 
     // zing
     implementation "com.google.zxing:core:3.3.0"
