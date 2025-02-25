@@ -122,6 +122,7 @@ class ApplicationHandler {
     }
 
     suspend fun writeDukptKey(keyIndex: Int, keyData: String, ksnData: String): Int{
+        println("For Kozen (in Bundle) ----> Loading DUKPT key")
         return iswDetailsAndKeySourceInteractor.writeDukPtKey(keyIndex, keyData, ksnData)
     }
 

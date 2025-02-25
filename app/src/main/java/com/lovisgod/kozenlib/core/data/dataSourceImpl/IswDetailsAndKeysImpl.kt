@@ -13,6 +13,7 @@ import com.lovisgod.kozenlib.core.network.models.TokenRequestModelKozen
 import com.lovisgod.kozenlib.core.network.models.convertConfigResponseToAllTerminalInfo
 import com.lovisgod.kozenlib.core.utilities.HexUtil
 import com.lovisgod.kozenlib.core.utilities.ISWGeneralException
+import com.lovisgod.kozenlib.core.utilities.Logger
 import com.pixplicity.easyprefs.library.Prefs
 import com.pos.sdk.security.POIHsmManage
 import com.pos.sdk.security.PedKcvInfo
@@ -22,22 +23,18 @@ import kotlin.jvm.Throws
 class IswDetailsAndKeysImpl(val authInterfaceKozen: AuthInterfaceKozen,
                             val kimonoInterfaceKozen: KimonoInterfaceKozen): IswDetailsAndKeyDataSource {
     override suspend fun writeDukPtKey(keyIndex: Int, keyData: String, KsnData: String): Int {
+        Logger.log("KSN $KsnData")
         val kcvInfo = PedKcvInfo(0, ByteArray(5))
 //        Prefs.putString("IPEK", keyData)
 //        Prefs.putString("KSN", KsnData.dropLast(1))
-
-        val hexData = padArray(HexUtil.parseHex(keyData), 16)
-
-        val writeDukptResult = POIHsmManage.getDefault().PedWriteTIK(
+        return POIHsmManage.getDefault().PedWriteTIK(
             keyIndex,
             0,
-            hexData.size,
-            hexData,
+            8,
+            HexUtil.parseHex(keyData),
             HexUtil.parseHex(KsnData),
             kcvInfo
         )
-
-        return writeDukptResult
     }
 
     private fun padArray(original: ByteArray, targetSize: Int, paddingByte: Byte = 0xFF.toByte()): ByteArray {
