@@ -69,8 +69,8 @@ class IswDetailsAndKeysImpl(val authInterfaceKozen: AuthInterfaceKozen,
                        convertConfigResponseToAllTerminalInfo(it).let {
                            it.terminalInfo?.let { info ->
                                println("terminal info ::::: ${info.toString()}")
-                               info.qtbMerchantCode = "MX1065"
-                               info.qtbMerchantAlias = "002208"
+                               info.qtbMerchantCode = "M***65"
+                               info.qtbMerchantAlias = "0***08"
                                info.nibbsKey = it.tmsRouteTypeConfig?.key.toString()
                                saveTerminalInfo(info)
                            }
