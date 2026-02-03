@@ -54,7 +54,7 @@ public class PasswordDialog {
     public static final int ONLINE_PIN   = 2;
     public static final int ENCIPHER_PIN = 3;
 
-    private String DEFAULT_EXP_PIN_LEN_IND = "0,4,5,6,7,8,9,10,11,12";
+    private String DEFAULT_EXP_PIN_LEN_IND = "4,5,6,7,8,9,10,11,12";
     private int    DEFAULT_TIMEOUT_MS      = 30000;
 
     private int keyIndex;
