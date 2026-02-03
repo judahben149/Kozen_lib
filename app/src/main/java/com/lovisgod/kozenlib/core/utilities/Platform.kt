@@ -1,20 +1,11 @@
 package com.lovisgod.kozenlib.core.utilities
 
-sealed class Model {
-    /**
-    L200 is the P5 device
-     */
-    object L200 : Model()
-    object P10 : Model()
-    object P13 : Model()
-    object P3 : Model()
-    object N4 : Model()
-    object UNKNOWN : Model()
+enum class Model {
+    L200, P10, P13, P3, N4, UNKNOWN
 }
 
 fun getDeviceModel(): Model {
     val name = android.os.Build.MODEL
-
     return when {
         name.contains("L200", ignoreCase = true) -> Model.L200
         name.contains("P10", ignoreCase = true) -> Model.P10

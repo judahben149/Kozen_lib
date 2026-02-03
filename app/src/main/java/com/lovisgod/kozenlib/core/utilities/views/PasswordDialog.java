@@ -35,6 +35,8 @@ import com.lovisgod.kozenlib.core.network.models.StringManipulator;
 import com.lovisgod.kozenlib.core.utilities.DeviceUtilsKozen;
 import com.lovisgod.kozenlib.core.utilities.HexUtil;
 import com.isw.pinencrypter.Converter;
+import com.lovisgod.kozenlib.core.utilities.Model;
+import com.lovisgod.kozenlib.core.utilities.PlatformKt;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.pos.sdk.emvcore.POIEmvCoreManager;
 import com.pos.sdk.emvcore.POIEmvCoreManager.EmvPinConstraints;
@@ -83,6 +85,7 @@ public class PasswordDialog {
     private TextView  tvError;
     private TextView  tvTitle;
     private TextView  tvPinLabelDesc;
+    private TextView  tvScreenDesc;
     private MaterialTextView tvPin;
     private CardView btnConfirm;
     private CardView btnClear;
@@ -96,7 +99,15 @@ public class PasswordDialog {
 
         System.out.println("key index" + keyIndex);
         LayoutInflater inflater = LayoutInflater.from(context);
-        ConstraintLayout view = (ConstraintLayout) inflater.inflate(R.layout.layout_password_new, null);
+
+        ConstraintLayout view;
+
+        if (PlatformKt.getDeviceModel() == Model.N4) {
+            view = (ConstraintLayout) inflater.inflate(R.layout.layout_password_new_n4, null);
+        } else {
+            view = (ConstraintLayout) inflater.inflate(R.layout.layout_password_new, null);
+        }
+
         instantiateViews(view);
 
         this.hsmManage = POIHsmManage.getDefault();
@@ -228,6 +239,7 @@ public class PasswordDialog {
         tvMessage = view.findViewById(R.id.tvMessage);
         tvError = view.findViewById(R.id.tvError);
         tvPinLabelDesc = view.findViewById(R.id.tvPinLabelDesc);
+        tvScreenDesc = view.findViewById(R.id.tvScreenDesc);
         tvPin = view.findViewById(R.id.tvPin);
         btnConfirm = view.findViewById(R.id.btnConfirm);
         btnClear = view.findViewById(R.id.btnClear);
@@ -259,28 +271,38 @@ public class PasswordDialog {
     }
 
     public void setAmountSpannableString() {
-        String amountString = "Please enter your Card PIN to authorise and complete your payment of ";
-        SpannableStringBuilder spannableString = new SpannableStringBuilder(amountString);
-
         String amountWithCurrency = "₦ " + amount;
         SpannableString amountSpan = new SpannableString(amountWithCurrency);
         amountSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, amountSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         amountSpan.setSpan(new ForegroundColorSpan(Color.rgb(0, 159, 228)), 0, amountSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        spannableString.append(amountSpan);
+        if (PlatformKt.getDeviceModel() == Model.N4) {
+            tvPinLabelDesc.setVisibility(View.GONE);
+            String titleSpannable = "Enter PIN -- ";
+            SpannableStringBuilder spannableInitial = new SpannableStringBuilder(titleSpannable);
 
-        tvPinLabelDesc.setText(spannableString);
+            spannableInitial.append(amountSpan);
+            tvScreenDesc.setText(spannableInitial);
+        } else {
+            String amountString = "Please enter your Card PIN to authorise and complete your payment of ";
+            SpannableStringBuilder spannableString = new SpannableStringBuilder(amountString);
+
+            spannableString.append(amountSpan);
+            tvPinLabelDesc.setText(spannableString);
+        }
     }
-
     public void setCardTypeDrawable() {
         switch (cardType) {
             case VERVE:
+                System.out.println("Card is Verve ooooooo");
                 ivCardImage.setImageResource(R.drawable.isw_card_verve);
                 break;
             case VISA:
+                System.out.println("Card is Visa ooooooo");
                 ivCardImage.setImageResource(R.drawable.isw_card_visa);
                 break;
             case MASTERCARD:
+                System.out.println("Card is Master ooooooo");
                 ivCardImage.setImageResource(R.drawable.isw_card_mastercard);
                 break;
             case INTERAC:
